@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/examples/queries-using-sparql/SparqlQueries/"
+    schedule:
+      interval: "daily"
