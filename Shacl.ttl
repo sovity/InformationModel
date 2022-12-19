@@ -18,7 +18,7 @@
 
 shapes:
     a voaf:Vocabulary, owl:Ontology ;
-    rdfs:isDefinedBy <https://w3id.org/idsa/core/> ;
+    rdfs:isDefinedBy ids: ;
     rdfs:label "IDS Information Model"@en ;
     dct:title "The International Data Spaces Information Model"@en ;
     rdfs:comment "This ontology defines classes and properties for describing participants, infrastructure, data and services of the International Data Spaces (formerly known as Industrial Data Space)." ;
@@ -30,9 +30,9 @@ shapes:
        <https://github.com/HaydarAk> ;
     dct:publisher ids:IDSA ;
     dct:created "2019-10-14"^^xsd:date ;
-    dct:modified "2021-06-17"^^xsd:date ;
-    owl:versionInfo "4.1.0" ;
-    owl:versionIRI <https://github.com/International-Data-Spaces-Association/InformationModel/tree/master/testing/4.1.0> ;
+    dct:modified "2022-06-01"^^xsd:date ;
+    owl:versionInfo "4.2.0" ;
+    owl:versionIRI <https://github.com/International-Data-Spaces-Association/InformationModel/tree/master/testing/4.2.0> ;
     vann:preferredNamespaceUri "https://github.com/International-Data-Spaces-Association/InformationModel/tree/master/testing" ;
     vann:preferredNamespacePrefix "shapes" ;
     rdfs:seeAlso <https://international-data-spaces-association.github.io/InformationModel/> ;
@@ -69,7 +69,6 @@ shapes:
     owl:imports <testing/communication/ApiDocumentTypeShape.ttl> ;
     owl:imports <testing/communication/AppRouteShape.ttl> ;
     owl:imports <testing/communication/EndpointShape.ttl> ;
-    owl:imports <testing/communication/HostShape.ttl> ;
     owl:imports <testing/communication/InterfaceShape.ttl> ;
     owl:imports <testing/communication/MessageExchangePatternShape.ttl> ;
     owl:imports <testing/communication/MessageShape.ttl> ;
@@ -93,14 +92,14 @@ shapes:
     owl:imports <testing/contract/LeftOperandShape.ttl> ;
     owl:imports <testing/contract/PricingModelShape.ttl> ;
     owl:imports <testing/contract/RuleShape.ttl> ;
+    owl:imports <testing/contract/UsageControlComponentShape.ttl> ;
     owl:imports <testing/governance/CertificationShape.ttl> ;
     owl:imports <testing/infrastructure/BrokerShape.ttl> ;
     owl:imports <testing/infrastructure/CatalogShape.ttl> ;
-    owl:imports <testing/infrastructure/ComponentShape.ttl> ;
     owl:imports <testing/infrastructure/ConfigurationModelShape.ttl> ;
     owl:imports <testing/infrastructure/ConnectorShape.ttl> ;
     owl:imports <testing/infrastructure/InfrastructureComponentShape.ttl> ;
-    owl:imports <testing/infrastructure/ParISSHape.ttl> ;
+    owl:imports <testing/infrastructure/ParISShape.ttl> ;
     owl:imports <testing/infrastructure/PublicKeyShape.ttl> ;
     owl:imports <testing/participant/BusinessIdentifierShape.ttl> ;
     owl:imports <testing/participant/IndustrialClassificationShape.ttl> ;
@@ -112,8 +111,8 @@ shapes:
     owl:imports <testing/shacl/abox-shapes.ttl> ;
     owl:imports <testing/shacl/tbox-shapes.ttl> ;
     owl:imports <testing/shared/DescribedSemanticallyShape.ttl> ;
-    owl:imports <testing/shared/DescribedShape.ttl> ;
     owl:imports <testing/shared/NamedShape.ttl> ;
+    owl:imports <testing/shared/DescribedShape.ttl> ;
     owl:imports <testing/taxonomies/CertificationShape.ttl> ;
     owl:imports <testing/taxonomies/DigitalContentShape.ttl> ;
     owl:imports <testing/taxonomies/MessageShape.ttl> ;

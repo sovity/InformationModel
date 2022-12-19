@@ -1,5 +1,7 @@
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.compose.Union;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.RDFParser;
@@ -11,7 +13,9 @@ import org.apache.jena.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.topbraid.jenax.util.JenaUtil;
+
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,43 +26,42 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 /** Represents an employee.
  * @author Haydar Akyürek
  * A simple Java application to demonstrate the usage of the Jena framework for SHACL validation.
  */
 
-public class SHACL_Validator {
+public class ShaclValidator {
 
     final Logger logger = LoggerFactory.getLogger(SHACL_Validator.class);
     private Path ont_path;
     private Path shacl_path;
-    private Path instance_path;
+    private File instance_file;
 
     /**
      * main method
      * @throws NullPointerException
      **/
-    public static void main(String[] args) {
-        try {
-             SHACL_Validator validator = new SHACL_Validator(args[0], args[1], args[2]);
+    public static void main(String[] args) throws IOException {
+        File[] instances = new File(args[2]).listFiles((dir, name) -> name.toLowerCase().endsWith(".jsonld"));
+        for (File p : instances){
+            SHACL_Validator validator = new ShaclValidator(args[0], args[1], p);
             validator.validateRDF();
-        } catch (IOException | NullPointerException e) {
-            e.printStackTrace();
         }
     }
 
     /**
      *
-     * @param ont_path Path to the IDS Information Model
-     * @param shacl_path path to the SHACL shapes. Basically the same as the /testing/ directory of the IDS Information Model repository
-     * @param instance_path path to the RDF instance (in JSON-LD) which ha to be validated against SHACL
+     * @param ontPath Path to the IDS Information Model
+     * @param shaclPath path to the SHACL shapes. Basically the same as the /testing/ directory of the IDS Information Model repository
+     * @param instanceFile File of the RDF instance (in JSON-LD) which ha to be validated against SHACL
      * @throws MalformedURLException
      */
-    public SHACL_Validator(String ont_path, String shacl_path, String instance_path) throws MalformedURLException {
-        this.ont_path = format_rdf_path(ont_path);
-        this.shacl_path = format_rdf_path(shacl_path);
-        this.instance_path = format_rdf_path(instance_path) ;
+    public ShaclValidator(String ontPath, String shaclPath, File instanceFile) throws MalformedURLException {
+        this.ont_path = formatRdfPath(ontPath);
+        this.shacl_path = formatRdfPath(shaclPath);
+        //this.instance_path = formatRdfPath(instance_path) ;
+        this.instance_file = instanceFile;
     }
 
     /**
@@ -66,16 +69,16 @@ public class SHACL_Validator {
      * @throws IOException
      */
     void validateRDF() throws IOException {
-        Graph data_graph = readModelAndInstance();          // Read ontology and
-        Shapes shapes_graph = readSHACL();
+        Graph dataGraph = readModelAndInstance();          // Read ontology and
+        Shapes shapesGraph = readSHACL();
 
-        System.out.println("Total RDF triples \t" + data_graph.size());
-        System.out.println("Total SHACL shapes \t" + shapes_graph.numShapes());
+        System.out.println("Total RDF triples \t" + dataGraph.size());
+        System.out.println("Total SHACL shapes \t" + shapesGraph.numShapes());
 
-        ValidationReport report = ShaclValidator.get().validate(shapes_graph, data_graph);
+        ValidationReport report = ShaclValidator.get().validate(shapesGraph, dataGraph);
         if (!report.conforms()) {
-            logger.error("failed");
-            logger.error(String.valueOf(report.getEntries()));
+            System.out.println(instance_file.toString() + " failed");
+            System.out.println(String.valueOf(report.getEntries()));
         }
         else {
             System.out.println("Validation successful");
@@ -85,18 +88,18 @@ public class SHACL_Validator {
 
     /**
      * Converts a path provided as string to a Path object
-     * @param string_path path to the file / directory
+     * @param stringPath path to the file / directory
      * @return Representation of the file / directory path as a Path object
      * @throws MalformedURLException
      */
-    private Path format_rdf_path(String string_path) throws MalformedURLException {
-        URL path_as_url = Paths.get(string_path).toUri().toURL();
+    private Path formatRdfPath(String stringPath) throws MalformedURLException {
+        URL pathAsUrl = Paths.get(stringPath).toUri().toURL();
 
-        if (path_as_url.getPath().substring(0, 4).contains(":")) {
-            return Paths.get(path_as_url.getPath().substring(1));
+        if (pathAsUrl.getPath().substring(0, 4).contains(":")) {
+            return Paths.get(pathAsUrl.getPath().substring(1));
         }
         else {
-            return Paths.get(path_as_url.getPath());
+            return Paths.get(pathAsUrl.getPath());
         }
     }
 
@@ -106,14 +109,15 @@ public class SHACL_Validator {
      * @throws IOException
      */
     public Graph readModelAndInstance() throws IOException {
-        Model ontologyModel = JenaUtil.createMemoryModel();
+        Model model = JenaUtil.createMemoryModel();
+        OntModel ontologyModel = JenaUtil.createOntologyModel(OntModelSpec.OWL_DL_MEM, model);
         ontologyModel.read(Files.newInputStream(this.ont_path)
                 , null, "TTL");
         Graph rdfInstanceModel = JenaUtil.createMemoryModel().getGraph();
-        byte[] json_ld_arr = Files.readAllBytes(this.instance_path);
+        byte[] jsonLdArr = Files.readAllBytes(this.instance_file.toPath());
 
         RDFParser parser = RDFParser.create()
-                .source(new ByteArrayInputStream(json_ld_arr))
+                .source(new ByteArrayInputStream(jsonLdArr))
                 .lang(RDFLanguages.JSONLD)
                 .errorHandler(ErrorHandlerFactory.errorHandlerWarn).build();
         parser.parse(rdfInstanceModel);
@@ -141,6 +145,9 @@ public class SHACL_Validator {
 
         // generate SHACL shapes graph
         result.forEach(file -> shapesModel.read(file, FileUtils.langTurtle));
+
+        //System.out.println(shapesModel.toString());
+
         shapes = Shapes.parse(shapesModel);
 
         return shapes;

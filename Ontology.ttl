@@ -38,7 +38,7 @@ ids:
        <https://github.com/lcomet> ;
     dct:publisher ids:IDSA ;
     dct:created "2017-09-26"^^xsd:date ;
-    dct:modified "2021-10-07"^^xsd:date ;
+    dct:modified "2022-06-01"^^xsd:date ;
     owl:versionInfo "4.2.0" ;
     owl:versionIRI <https://w3id.org/idsa/core/4.2.0> ;
     vann:preferredNamespaceUri "https://w3id.org/idsa/core/" ;
@@ -103,7 +103,7 @@ _:AnnaKasprzik a dct:Agent, foaf:Person ;
     foaf:name "Maarten Kollenstart" ;
 .
 <https://github.com/JohannesLipp> a dct:Agent, foaf:Person ;
-    foaf:name "Johannes Theissen-Lipp" ;
+    foaf:name "Johannes Lipp" ;
 .
 <https://github.com/lcomet> a dct:Agent, foaf:Person ;
     foaf:name "Lina Molinas Comet" ;
@@ -111,16 +111,15 @@ _:AnnaKasprzik a dct:Agent, foaf:Person ;
 # ----------------------------
 # Imports of class files
 ids:
-    owl:imports <model/adms.ttl> ;
     owl:imports <model/communication/AppRoute.ttl> ;
     owl:imports <model/communication/Endpoint.ttl> ;
     owl:imports <model/communication/Message.ttl> ;
     owl:imports <model/communication/Proxy.ttl> ;
+    owl:imports <model/communication/AppRoute.ttl> ;
+    owl:imports <model/communication/Endpoint.ttl> ;
     owl:imports <model/content/Artifact.ttl> ;
     owl:imports <model/content/ArtifactState.ttl> ;
     owl:imports <model/content/Asset.ttl> ;
-    owl:imports <model/content/Concept.ttl> ;
-    owl:imports <model/content/ContentType.ttl> ;
     owl:imports <model/content/DataApp.ttl> ;
     owl:imports <model/content/DigitalContent.ttl> ;
     owl:imports <model/content/Language.ttl> ;
@@ -129,18 +128,21 @@ ids:
     owl:imports <model/content/Representation.ttl> ;
     owl:imports <model/content/Resource.ttl> ;
     owl:imports <model/content/UsageControlObject.ttl> ;
-    owl:imports <model/context/Event.ttl> ;
     owl:imports <model/context/SpatialEntity.ttl> ;
     owl:imports <model/context/TemporalEntity.ttl> ;
     owl:imports <model/contract/Action.ttl> ;
     owl:imports <model/contract/BinaryOperator.ttl> ;
+    owl:imports <model/contract/UsageControlComponent.ttl> ;
     owl:imports <model/contract/Constraint.ttl> ;
     owl:imports <model/contract/Contract.ttl> ;
     owl:imports <model/contract/LeftOperand.ttl> ;
     owl:imports <model/contract/Rule.ttl> ;
     owl:imports <model/contract/UsagePolicyClass.ttl> ;
+    owl:imports <model/contract/BinaryOperator.ttl> ;
+    owl:imports <model/contract/Action.ttl> ;
+    owl:imports <model/contract/LeftOperand.ttl> ;
+    owl:imports <model/contract/Contract.ttl> ;
     owl:imports <model/governance/Certification.ttl> ;
-    owl:imports <model/governance/License.ttl> ;
     owl:imports <model/infrastructure/AppStore.ttl> ;
     owl:imports <model/infrastructure/Broker.ttl> ;
     owl:imports <model/infrastructure/Catalog.ttl> ;
@@ -181,12 +183,13 @@ ids:
     owl:imports <codes/ConnectorStatus.ttl> ;
     owl:imports <codes/ContentType.ttl> ;
     owl:imports <codes/Frequency.ttl> ;
+    owl:imports <codes/IdsProtocolSpecification.ttl> ;
     owl:imports <codes/KeyType.ttl> ;
     owl:imports <codes/Language.ttl> ;
     owl:imports <codes/LeftOperand.ttl> ;
     owl:imports <codes/LogLevel.ttl> ;
-    owl:imports <codes/Mediatype.ttl> ;
     owl:imports <codes/PaymentModality.ttl> ;
+    owl:imports <codes/QualityMetrics.ttl> ;
     owl:imports <codes/QueryLanguage.ttl> ;
     owl:imports <codes/QueryTarget.ttl> ;
     owl:imports <codes/RejectionReason.ttl> ;
@@ -194,4 +197,4 @@ ids:
     owl:imports <codes/SecurityGuarantee.ttl> ;
     owl:imports <codes/TokenFormat.ttl> ;
     owl:imports <codes/UsagePolicyClass.ttl> ;
-. 
+.
